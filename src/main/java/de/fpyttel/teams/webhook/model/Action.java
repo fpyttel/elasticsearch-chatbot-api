@@ -5,13 +5,16 @@ import java.time.LocalDateTime;
 import java.util.Locale;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.ToString;
 
 @AllArgsConstructor
+@Builder
 @Getter
 @ToString
-public class WebhookRequest {
+public class Action {
 
 	private Type type;
 	private String id;
@@ -24,5 +27,10 @@ public class WebhookRequest {
 	private String text;
 	private String textFormat;
 	private Locale locale;
-	
+	private String replyToId;
+
+	public ActionBuilder replyBuilder() {
+		return Action.builder().replyToId(this.id).conversation(this.conversation).recipient(this.from);
+	}
+
 }

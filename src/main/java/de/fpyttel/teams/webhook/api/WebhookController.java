@@ -6,16 +6,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.fpyttel.teams.webhook.model.WebhookRequest;
-import de.fpyttel.teams.webhook.model.WebhookResponse;
+import de.fpyttel.teams.webhook.model.Action;
 
 @RestController
 @RequestMapping("/webhook")
 public class WebhookController {
 
 	@PostMapping
-	WebhookResponse hook(@RequestBody @NonNull WebhookRequest webhookRequest) {
-		return WebhookResponse.builder(webhookRequest).text("Hi I'm here!").build();
+	Action hook(@RequestBody @NonNull Action action) {
+		return action.replyBuilder().text("Hi I'm here!").build();
 	}
 
 }
