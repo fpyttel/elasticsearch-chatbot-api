@@ -11,19 +11,16 @@ import lombok.NonNull;
 public class WebhookResponse {
 
 	private Type type;
-	private From from;
-	private Conversation conversation;
-	private Recipient recipient;
+	private ChannelAccount from;
+	private ConversationAccount conversation;
+	private ChannelAccount recipient;
 	private String text;
 	private String replyToId;
 
 	public static WebhookResponseBuilder builder(@NonNull final WebhookRequest webhookRequest) {
 		return new WebhookResponseBuilder().replyToId(webhookRequest.getId())
 				.conversation(webhookRequest.getConversation())
-				.recipient(Recipient.builder()
-						.id(webhookRequest.getFrom().getId())
-						.name(webhookRequest.getFrom().getName())
-						.build());
+				.recipient(webhookRequest.getFrom());
 	}
 
 }

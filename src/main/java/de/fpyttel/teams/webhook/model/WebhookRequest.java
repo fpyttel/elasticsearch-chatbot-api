@@ -18,9 +18,9 @@ public class WebhookRequest {
 	private LocalDateTime timestamp;
 	private URL serviceUrl;
 	private String channelId;
-	private From from;
-	private Conversation conversation;
-	private Recipient recipient;
+	private ChannelAccount from;
+	private ConversationAccount conversation;
+	private ChannelAccount recipient;
 	private String text;
 	private String textFormat;
 	private Locale locale;

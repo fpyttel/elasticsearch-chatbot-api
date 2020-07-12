@@ -1,5 +1,6 @@
 package de.fpyttel.teams.webhook.model;
 
-public enum ConversationType {
-	channel
+public enum Role {
+	user,
+	bot
 }
