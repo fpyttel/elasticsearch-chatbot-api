@@ -18,7 +18,7 @@ import lombok.NonNull;
 public class ConversationRegistry {
 
 	private volatile Map<String, Queue<Action>> conversationMap = new HashMap<>();
-	private volatile Map<String, Message> lastParserResultMap = new HashMap<>();
+	private volatile Map<String, Message> lastMessageMap = new HashMap<>();
 
 	public void put(@NonNull final Action action) {
 		if (!conversationMap.containsKey(action.getConversation().getId())) {
@@ -34,12 +34,12 @@ public class ConversationRegistry {
 		return null;
 	}
 
-	public void setLastParserResult(@NonNull final String conversationId, final Message parserResult) {
-		lastParserResultMap.put(conversationId, parserResult);
+	public void setLastMessage(@NonNull final String conversationId, final Message parserResult) {
+		lastMessageMap.put(conversationId, parserResult);
 	}
 
-	public Message getLastParserResult(@NonNull final String conversationId) {
-		return lastParserResultMap.getOrDefault(conversationId, null);
+	public Message getLastMessage(@NonNull final String conversationId) {
+		return lastMessageMap.getOrDefault(conversationId, null);
 	}
 
 }

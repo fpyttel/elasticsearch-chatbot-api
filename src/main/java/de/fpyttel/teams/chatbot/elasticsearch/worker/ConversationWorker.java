@@ -47,23 +47,23 @@ public class ConversationWorker extends Thread {
 		// process all actions in the queue
 		while ((currentAction = conversationRegistry.pull(conversationId)) != null) {
 			// parse message & merge with previous message if possible
-			final Message message = MessageJoiner.join(conversationRegistry.getLastParserResult(conversationId),
+			final Message message = MessageJoiner.join(conversationRegistry.getLastMessage(conversationId),
 					messageParser.parse(currentAction));
 
 			// prepare response
 			final String responseText = answerGenerator.generate(message);
 
-			// process action
+			// post instant answer
 			teamsClient.postToConversation(currentAction.replyBuilder().text(responseText).build());
 
 			// create task & execute if needed
 			final ConversationTask task = taskFactory.createTask(this, message);
 			if (task != null && task.execute()) {
 				// task executed fine -> reset last message and start "new conversation"
-				conversationRegistry.setLastParserResult(conversationId, null);
+				conversationRegistry.setLastMessage(conversationId, null);
 			} else {
 				// update last message
-				conversationRegistry.setLastParserResult(conversationId, message);
+				conversationRegistry.setLastMessage(conversationId, message);
 			}
 		}
 
