@@ -1,16 +1,16 @@
-# Elasticsearch Chatbot API
+# Elasticsearch Teams Chatbot API
 
-A simple project to run a MS Teams Chatbot which fetches log infos from a elasticsearch instance.
+A simple project to run a MS Teams Chatbot which fetches log infos from an elasticsearch instance.
 
 ## Start the bot
 
-Set proper values for `elastic.indices.pattern`, `ms.app.id` and `ms.app.password` in the application.properties and run:
+Set proper values for `elastic.indices.pattern`, `ms.app.id` and `ms.app.password` in the application.properties and run following command.
 
 ```
 gradlew clean build run
 ```
 
-Don't forget to register your bot in Azure (below endpoint should be used)! 
+Don't forget to register your bot in Azure (below endpoint should be used e.g. for tunneling)! 
 
 ## Endpoints
 
