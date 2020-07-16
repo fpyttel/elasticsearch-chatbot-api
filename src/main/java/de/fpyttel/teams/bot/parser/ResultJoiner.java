@@ -4,7 +4,7 @@ import lombok.NonNull;
 
 public class ResultJoiner {
 
-	public static ParserResult join(@NonNull final ParserResult oldResult, @NonNull final ParserResult newResult) {
+	public static ParserResult join(final ParserResult oldResult, @NonNull final ParserResult newResult) {
 		if (oldResult != null && ParserResult.Status.incomplete == newResult.getStatus()
 				&& ParserResult.Status.incomplete == oldResult.getStatus()) {
 			newResult.setEnvironment(

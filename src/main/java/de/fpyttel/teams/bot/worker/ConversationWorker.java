@@ -29,6 +29,9 @@ public class ConversationWorker extends Thread {
 	@Autowired
 	private ElasticClient elasticClient;
 
+	@Autowired
+	private AnswerGenerator answerGenerator;
+
 	@Setter
 	private String conversationId;
 	private ParserResult lastMessage;
@@ -53,7 +56,10 @@ public class ConversationWorker extends Thread {
 				responseText = buildLoggerMessage(parserResult);
 				break;
 			case error:
-				responseText = "I'm not getting your point.";
+				responseText = answerGenerator.generate(parserResult);
+				break;
+			case conversation_greeting:
+				responseText = answerGenerator.generate(parserResult);
 				break;
 			default:
 				responseText = "Do you have something to do for me?";
