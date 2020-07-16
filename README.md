@@ -15,3 +15,7 @@ Don't forget to register your bot in Azure (below endpoint should be used e.g. f
 ## Endpoints
 
 POST http://127.0.0.1:8070/api/message
+
+## Sample
+
+![Example Chat](relative/sample/sample-conversation.png?raw=true "Example Chat")
