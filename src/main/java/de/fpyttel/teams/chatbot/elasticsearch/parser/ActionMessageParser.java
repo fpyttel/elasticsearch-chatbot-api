@@ -99,14 +99,14 @@ public class ActionMessageParser {
 		Category category = null;
 		Status status = Status.incomplete;
 
-		String[] sentences = sentenceCategorizer.sentDetect(text);
+		// start parsing
+		final String[] sentences = sentenceCategorizer.sentDetect(text);
 		for (String sentence : sentences) {
 			// execute NLP logic to finally calculate the category
 			final String[] tokens = tokenizer.tokenize(sentence);
 			final String[] posTags = posTagger.tag(tokens);
 			final String[] lemmas = lemmatizer.lemmatize(tokens, posTags);
-			category = Category
-					.valueOf(docCategorizer.getBestCategory(docCategorizer.categorize(lemmas)));
+			category = Category.valueOf(docCategorizer.getBestCategory(docCategorizer.categorize(lemmas)));
 			log.info("parsed action with message category=[{}]", category);
 
 			// continue based on category & type
@@ -126,13 +126,17 @@ public class ActionMessageParser {
 			}
 		}
 
-		return Message.builder().category(category).status(status).environment(env).build();
+		return Message.builder().category(category).status(status).environment(env).origin(action).build();
 	}
 
 	private Environment searchEnv(final String text) {
 		for (Environment env : Environment.class.getEnumConstants()) {
 			// search for any match
-			if ((" " + text + " ").toLowerCase().matches(".*\\s" + env.toString().toLowerCase() + "\\s.*")) {
+			if ((" " + text + " ").toLowerCase()
+					.replace('?', ' ')
+					.replace('.', ' ')
+					.replace(',', ' ')
+					.matches(".*\\s" + env.toString().toLowerCase() + "\\s.*")) {
 				return env;
 			}
 		}

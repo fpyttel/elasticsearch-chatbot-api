@@ -1,19 +1,18 @@
 package de.fpyttel.teams.chatbot.elasticsearch.worker;
 
-import org.elasticsearch.action.search.SearchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import de.fpyttel.teams.chatbot.elasticsearch.client.elasticsearch.ElasticClient;
 import de.fpyttel.teams.chatbot.elasticsearch.client.ms.TeamsClient;
 import de.fpyttel.teams.chatbot.elasticsearch.client.ms.entity.Action;
 import de.fpyttel.teams.chatbot.elasticsearch.parser.ActionMessageParser;
 import de.fpyttel.teams.chatbot.elasticsearch.parser.AnswerGenerator;
 import de.fpyttel.teams.chatbot.elasticsearch.parser.MessageJoiner;
-import de.fpyttel.teams.chatbot.elasticsearch.parser.entity.CategoryType;
 import de.fpyttel.teams.chatbot.elasticsearch.parser.entity.Message;
 import de.fpyttel.teams.chatbot.elasticsearch.registry.ConversationRegistry;
 import de.fpyttel.teams.chatbot.elasticsearch.registry.ConversationWorkerRegistry;
+import de.fpyttel.teams.chatbot.elasticsearch.worker.task.ConversationTask;
+import de.fpyttel.teams.chatbot.elasticsearch.worker.task.ConversationTaskFactory;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,10 +32,10 @@ public class ConversationWorker extends Thread {
 	private TeamsClient teamsClient;
 
 	@Autowired
-	private ElasticClient elasticClient;
+	private AnswerGenerator answerGenerator;
 
 	@Autowired
-	private AnswerGenerator answerGenerator;
+	private ConversationTaskFactory taskFactory;
 
 	@Getter
 	@Setter
@@ -44,42 +43,27 @@ public class ConversationWorker extends Thread {
 
 	@Override
 	public void run() {
-		while (true) {
-			// get latest action OR wait
-			final Action currentAction = conversationRegistry.pull(conversationId);
-			if (currentAction == null) {
-				break;
-			}
-
+		Action currentAction = null;
+		// process all actions in the queue
+		while ((currentAction = conversationRegistry.pull(conversationId)) != null) {
 			// parse message & merge with previous message if possible
-			final Message parserResult = MessageJoiner
-					.join(conversationRegistry.getLastParserResult(conversationId), messageParser.parse(currentAction));
+			final Message message = MessageJoiner.join(conversationRegistry.getLastParserResult(conversationId),
+					messageParser.parse(currentAction));
 
 			// prepare response
-			final String responseText = answerGenerator.generate(parserResult);
+			final String responseText = answerGenerator.generate(message);
 
 			// process action
 			teamsClient.postToConversation(currentAction.replyBuilder().text(responseText).build());
-			if (Message.Status.complete == parserResult.getStatus()
-					&& CategoryType.log == parserResult.getCategoryType()) {
-				// fetch data from ElasticSearch
-				final SearchResponse response = elasticClient.search(parserResult.getEnvironment(), "Exception");
-				if (response != null) {
-					teamsClient.postToConversation(currentAction.replyBuilder()
-							.text("Found " + response.getHits().getTotalHits().value + " Exceptions on "
-									+ parserResult.getEnvironment() + " during the last "
-									+ ElasticClient.DEFAULT_TIMEFRAME_HOURS + " hour.")
-							.build());
-				} else {
-					teamsClient.postToConversation(currentAction.replyBuilder()
-							.text("Coudn't find anything relevant in the last hour.")
-							.build());
-				}
-				// reset last message
+
+			// create task & execute if needed
+			final ConversationTask task = taskFactory.createTask(this, message);
+			if (task != null && task.execute()) {
+				// task executed fine -> reset last message and start "new conversation"
 				conversationRegistry.setLastParserResult(conversationId, null);
 			} else {
 				// update last message
-				conversationRegistry.setLastParserResult(conversationId, parserResult);
+				conversationRegistry.setLastParserResult(conversationId, message);
 			}
 		}
 

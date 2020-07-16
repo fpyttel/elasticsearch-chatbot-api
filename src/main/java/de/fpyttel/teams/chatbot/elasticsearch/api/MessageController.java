@@ -32,7 +32,7 @@ public class MessageController {
 		}
 		
 		// return empty action -> work will be done in parallel
-		return Action.builder().build();
+		return new Action();
 	}
 	
 }

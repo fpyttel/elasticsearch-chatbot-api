@@ -1,5 +1,6 @@
 package de.fpyttel.teams.chatbot.elasticsearch.parser.entity;
 
+import de.fpyttel.teams.chatbot.elasticsearch.client.ms.entity.Action;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public class Message {
 	private Category category;
 	private Status status;
 	private Environment environment;
+	private Action origin;
 	
 	public CategoryType getCategoryType() {
 		return category != null ? CategoryType.valueOf(category) : null;
