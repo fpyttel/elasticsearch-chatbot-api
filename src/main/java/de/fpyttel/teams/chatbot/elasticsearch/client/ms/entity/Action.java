@@ -32,11 +32,12 @@ public class Action {
 
 	public ActionBuilder replyBuilder() {
 		return Action.builder()
-				.replyToId(this.id)
+				.replyToId(id)
 				.serviceUrl(serviceUrl)
-				.conversation(this.conversation)
+				.conversation(conversation)
 				.type(Type.message)
-				.recipient(this.from);
+				.from(recipient)
+				.recipient(from);
 	}
 
 }
