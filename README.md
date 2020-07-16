@@ -18,4 +18,4 @@ POST http://127.0.0.1:8070/api/message
 
 ## Sample
 
-![Example Chat](relative/sample/sample-conversation.png?raw=true "Example Chat")
+![Example Chat](/sample/sample-conversation.png?raw=true "Example Chat")
