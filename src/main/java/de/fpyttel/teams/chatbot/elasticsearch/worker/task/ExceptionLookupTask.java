@@ -34,7 +34,7 @@ public class ExceptionLookupTask extends ConversationTask {
 			teamsClient.postToConversation(getMessage()
 					.getOrigin()
 					.replyBuilder()
-					.text("Coudn't find anything relevant in the last hour.")
+					.text("Couldn't find anything relevant in the last hour.")
 					.build());
 		}
 		return true;
