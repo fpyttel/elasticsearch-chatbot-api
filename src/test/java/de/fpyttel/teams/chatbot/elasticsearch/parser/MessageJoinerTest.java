@@ -1,4 +1,4 @@
-package de.fpyttel.teams.chatbot.elasticsearch.parser.boundary;
+package de.fpyttel.teams.chatbot.elasticsearch.parser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
