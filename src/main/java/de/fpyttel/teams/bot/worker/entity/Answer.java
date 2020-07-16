@@ -1,4 +1,4 @@
-package de.fpyttel.teams.bot.worker;
+package de.fpyttel.teams.bot.worker.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.NonNull;

@@ -5,13 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
-import de.fpyttel.teams.bot.model.Action;
-import de.fpyttel.teams.bot.model.Environment;
-import de.fpyttel.teams.bot.parser.ActionMessageParser;
-import de.fpyttel.teams.bot.parser.Category;
-import de.fpyttel.teams.bot.parser.CategoryType;
-import de.fpyttel.teams.bot.parser.ParserResult;
-import de.fpyttel.teams.bot.parser.ParserResult.Status;
+import de.fpyttel.teams.bot.client.ms.entity.Action;
+import de.fpyttel.teams.bot.client.ms.entity.Environment;
+import de.fpyttel.teams.bot.parser.boundary.ActionMessageParser;
+import de.fpyttel.teams.bot.parser.entity.Category;
+import de.fpyttel.teams.bot.parser.entity.CategoryType;
+import de.fpyttel.teams.bot.parser.entity.Message;
+import de.fpyttel.teams.bot.parser.entity.Message.Status;
 
 public class ActionMessageParserTest {
 
@@ -23,7 +23,7 @@ public class ActionMessageParserTest {
 		final Action action = Action.builder().text("Can you please search for NPEs in the PROD logs for me?").build();
 
 		// execute test
-		final ParserResult result = parser.parse(action);
+		final Message result = parser.parse(action);
 
 		// check result
 		assertEquals(CategoryType.log, result.getCategoryType());
@@ -38,7 +38,7 @@ public class ActionMessageParserTest {
 		final Action action = Action.builder().text("please check the stuff on the PROD environment").build();
 
 		// execute test
-		final ParserResult result = parser.parse(action);
+		final Message result = parser.parse(action);
 
 		// check result
 		assertEquals(CategoryType.log, result.getCategoryType());
@@ -53,7 +53,7 @@ public class ActionMessageParserTest {
 		final Action action = Action.builder().text("can you help me with the logs?").build();
 
 		// execute test
-		final ParserResult result = parser.parse(action);
+		final Message result = parser.parse(action);
 
 		// check result
 		assertEquals(CategoryType.log, result.getCategoryType());
@@ -68,7 +68,7 @@ public class ActionMessageParserTest {
 		final Action action = Action.builder().text("Hi").build();
 
 		// execute test
-		final ParserResult result = parser.parse(action);
+		final Message result = parser.parse(action);
 
 		// check result
 		assertEquals(CategoryType.conversation, result.getCategoryType());
@@ -81,7 +81,7 @@ public class ActionMessageParserTest {
 		final Action action = Action.builder().text("on PROD").build();
 
 		// execute test
-		final ParserResult result = parser.parse(action);
+		final Message result = parser.parse(action);
 
 		// check result
 		assertEquals(CategoryType.log, result.getCategoryType());

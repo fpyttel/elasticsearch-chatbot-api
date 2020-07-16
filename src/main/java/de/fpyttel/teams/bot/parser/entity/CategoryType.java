@@ -1,4 +1,4 @@
-package de.fpyttel.teams.bot.parser;
+package de.fpyttel.teams.bot.parser.entity;
 
 import lombok.NonNull;
 

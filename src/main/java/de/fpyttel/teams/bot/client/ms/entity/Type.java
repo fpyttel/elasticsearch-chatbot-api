@@ -1,4 +1,4 @@
-package de.fpyttel.teams.bot.model;
+package de.fpyttel.teams.bot.client.ms.entity;
 
 public enum Type {
 	message,

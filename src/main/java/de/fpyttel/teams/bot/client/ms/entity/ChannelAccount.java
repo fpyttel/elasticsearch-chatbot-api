@@ -1,4 +1,4 @@
-package de.fpyttel.teams.bot.model;
+package de.fpyttel.teams.bot.client.ms.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,18 +11,10 @@ import lombok.ToString;
 @Builder
 @Getter
 @ToString
-public class ConversationAccount {
-
-	public enum Type {
-		channel, personal, group
-	}
+public class ChannelAccount {
 
 	private String id;
 	private String name;
-	private Type conversationType;
-	private String tenantId;
-	private boolean isGroup;
-	private Role role;
 	private String aadObjectId;
-
+	
 }

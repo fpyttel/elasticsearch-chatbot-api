@@ -1,4 +1,4 @@
-package de.fpyttel.teams.bot.client;
+package de.fpyttel.teams.bot.client.elasticsearch.boundary;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -20,7 +20,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import de.fpyttel.teams.bot.model.Environment;
+import de.fpyttel.teams.bot.client.ms.entity.Environment;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 

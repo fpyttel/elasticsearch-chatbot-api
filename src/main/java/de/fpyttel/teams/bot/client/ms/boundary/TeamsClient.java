@@ -1,4 +1,4 @@
-package de.fpyttel.teams.bot.client;
+package de.fpyttel.teams.bot.client.ms.boundary;
 
 import javax.annotation.PostConstruct;
 
@@ -16,8 +16,8 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.fpyttel.teams.bot.model.Action;
-import de.fpyttel.teams.bot.model.MsToken;
+import de.fpyttel.teams.bot.client.ms.entity.Action;
+import de.fpyttel.teams.bot.client.ms.entity.MsToken;
 import lombok.NonNull;
 
 @Component

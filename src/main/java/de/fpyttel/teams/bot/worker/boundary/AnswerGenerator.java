@@ -1,4 +1,4 @@
-package de.fpyttel.teams.bot.worker;
+package de.fpyttel.teams.bot.worker.boundary;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,8 +8,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import org.springframework.stereotype.Component;
 
-import de.fpyttel.teams.bot.parser.Category;
-import de.fpyttel.teams.bot.parser.ParserResult;
+import de.fpyttel.teams.bot.parser.entity.Category;
+import de.fpyttel.teams.bot.parser.entity.Message;
+import de.fpyttel.teams.bot.worker.entity.Answer;
 import lombok.NonNull;
 
 @Component
@@ -55,7 +56,7 @@ public class AnswerGenerator {
 		answerMap.put(Category.log_request_continue, logRequestContinueAnswers);
 	}
 
-	public String generate(@NonNull final ParserResult parserResult) {
+	public String generate(@NonNull final Message parserResult) {
 		// determine answer list
 		final List<Answer> answers = answerMap.getOrDefault(parserResult.getCategory(), answerMap.get(Category.error));
 		// select random answer

@@ -1,22 +1,25 @@
-package de.fpyttel.teams.bot.parser;
+package de.fpyttel.teams.bot.parser.boundary;
 
+import de.fpyttel.teams.bot.parser.entity.Category;
+import de.fpyttel.teams.bot.parser.entity.CategoryType;
+import de.fpyttel.teams.bot.parser.entity.Message;
 import lombok.NonNull;
 
 public class ResultJoiner {
 
-	public static ParserResult join(final ParserResult oldResult, @NonNull final ParserResult newResult) {
-		if (oldResult != null && (ParserResult.Status.incomplete == newResult.getStatus()
-				|| ParserResult.Status.incomplete == oldResult.getStatus())) {
+	public static Message join(final Message oldResult, @NonNull final Message newResult) {
+		if (oldResult != null && (Message.Status.incomplete == newResult.getStatus()
+				|| Message.Status.incomplete == oldResult.getStatus())) {
 			// join environment
 			newResult.setEnvironment(
 					oldResult.getEnvironment() != null ? oldResult.getEnvironment() : newResult.getEnvironment());
 			// join status
 			newResult.setStatus(newResult.getEnvironment() != null && CategoryType.log == newResult.getCategoryType()
-					? ParserResult.Status.complete
-					: ParserResult.Status.incomplete);
+					? Message.Status.complete
+					: Message.Status.incomplete);
 			// join category
 			if (CategoryType.log == newResult.getCategoryType()) {
-				if (ParserResult.Status.complete == newResult.getStatus()) {
+				if (Message.Status.complete == newResult.getStatus()) {
 					newResult.setCategory(Category.log_request);
 				} else {
 					newResult.setCategory(Category.log_request_continue);

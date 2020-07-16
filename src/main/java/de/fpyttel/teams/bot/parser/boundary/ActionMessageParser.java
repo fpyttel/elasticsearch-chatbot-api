@@ -1,4 +1,4 @@
-package de.fpyttel.teams.bot.parser;
+package de.fpyttel.teams.bot.parser.boundary;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -7,9 +7,12 @@ import java.nio.charset.StandardCharsets;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
-import de.fpyttel.teams.bot.model.Action;
-import de.fpyttel.teams.bot.model.Environment;
-import de.fpyttel.teams.bot.parser.ParserResult.Status;
+import de.fpyttel.teams.bot.client.ms.entity.Action;
+import de.fpyttel.teams.bot.client.ms.entity.Environment;
+import de.fpyttel.teams.bot.parser.entity.Category;
+import de.fpyttel.teams.bot.parser.entity.CategoryType;
+import de.fpyttel.teams.bot.parser.entity.Message;
+import de.fpyttel.teams.bot.parser.entity.Message.Status;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import opennlp.tools.doccat.BagOfWordsFeatureGenerator;
@@ -87,7 +90,7 @@ public class ActionMessageParser {
 		return model;
 	}
 
-	public ParserResult parse(@NonNull final Action action) {
+	public Message parse(@NonNull final Action action) {
 		// get text
 		final String text = action.getText().replaceAll("\\<.*?\\>", "");
 
@@ -123,7 +126,7 @@ public class ActionMessageParser {
 			}
 		}
 
-		return ParserResult.builder().category(category).status(status).environment(env).build();
+		return Message.builder().category(category).status(status).environment(env).build();
 	}
 
 	private Environment searchEnv(final String text) {
@@ -135,12 +138,5 @@ public class ActionMessageParser {
 		}
 		return null;
 	}
-
-//	private Category searchType(final String text) {
-//		if (text.toLowerCase().matches(".*\\s(log|logs|logger)\\s.*")) {
-//			return Category.logger;
-//		}
-//		return Type.none;
-//	}
 
 }

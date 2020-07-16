@@ -9,8 +9,8 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import de.fpyttel.teams.bot.model.Action;
-import de.fpyttel.teams.bot.worker.ConversationWorker;
+import de.fpyttel.teams.bot.client.ms.entity.Action;
+import de.fpyttel.teams.bot.worker.boundary.ConversationWorker;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 

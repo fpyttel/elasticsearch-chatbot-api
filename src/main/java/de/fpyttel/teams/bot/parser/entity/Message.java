@@ -1,6 +1,6 @@
-package de.fpyttel.teams.bot.parser;
+package de.fpyttel.teams.bot.parser.entity;
 
-import de.fpyttel.teams.bot.model.Environment;
+import de.fpyttel.teams.bot.client.ms.entity.Environment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ParserResult {
+public class Message {
 
 	public enum Status {
 		complete, incomplete, error

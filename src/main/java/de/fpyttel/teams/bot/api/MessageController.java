@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.fpyttel.teams.bot.model.Action;
+import de.fpyttel.teams.bot.client.ms.entity.Action;
 import de.fpyttel.teams.bot.registry.ConversationRegistry;
 import de.fpyttel.teams.bot.registry.ConversationWorkerRegistry;
 

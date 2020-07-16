@@ -1,16 +1,16 @@
-package de.fpyttel.teams.bot.worker;
+package de.fpyttel.teams.bot.worker.boundary;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import de.fpyttel.teams.bot.client.ElasticClient;
-import de.fpyttel.teams.bot.client.TeamsClient;
-import de.fpyttel.teams.bot.model.Action;
-import de.fpyttel.teams.bot.parser.ActionMessageParser;
-import de.fpyttel.teams.bot.parser.CategoryType;
-import de.fpyttel.teams.bot.parser.ParserResult;
-import de.fpyttel.teams.bot.parser.ResultJoiner;
+import de.fpyttel.teams.bot.client.elasticsearch.boundary.ElasticClient;
+import de.fpyttel.teams.bot.client.ms.boundary.TeamsClient;
+import de.fpyttel.teams.bot.client.ms.entity.Action;
+import de.fpyttel.teams.bot.parser.boundary.ActionMessageParser;
+import de.fpyttel.teams.bot.parser.boundary.ResultJoiner;
+import de.fpyttel.teams.bot.parser.entity.CategoryType;
+import de.fpyttel.teams.bot.parser.entity.Message;
 import de.fpyttel.teams.bot.registry.ConversationRegistry;
 import de.fpyttel.teams.bot.registry.ConversationWorkerRegistry;
 import lombok.Getter;
@@ -51,7 +51,7 @@ public class ConversationWorker extends Thread {
 			}
 
 			// parse message & merge with previous message if possible
-			final ParserResult parserResult = ResultJoiner
+			final Message parserResult = ResultJoiner
 					.join(conversationRegistry.getLastParserResult(conversationId), messageParser.parse(currentAction));
 
 			// prepare response
@@ -59,7 +59,7 @@ public class ConversationWorker extends Thread {
 
 			// process action
 			teamsClient.postToConversation(currentAction.replyBuilder().text(responseText).build());
-			if (ParserResult.Status.complete == parserResult.getStatus()
+			if (Message.Status.complete == parserResult.getStatus()
 					&& CategoryType.log == parserResult.getCategoryType()) {
 				// fetch data from ElasticSearch
 				final SearchResponse response = elasticClient.search(parserResult.getEnvironment(), "Exception");
