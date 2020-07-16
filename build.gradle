@@ -9,7 +9,7 @@ group = 'de.fpyttel.teams'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
-mainClassName = 'de.fpyttel.teams.webhook.Application'
+mainClassName = 'de.fpyttel.teams.bot.Application'
 
 configurations {
 	compileOnly {
@@ -24,6 +24,9 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compile 'org.elasticsearch.client:elasticsearch-rest-high-level-client:7.8.0'
+	compile 'org.elasticsearch:elasticsearch:7.8.0'
+	compile group: 'org.apache.opennlp', name: 'opennlp-tools', version: '1.9.2'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
@@ -33,4 +36,8 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+bootRun {
+    systemProperties System.properties
 }

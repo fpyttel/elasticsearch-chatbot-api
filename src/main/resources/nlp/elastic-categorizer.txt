@@ -1,0 +1,5 @@
+conversation_greeting	 hi hi. hello how are you ? hey . hows it going good morning good evening good afternoon howdy 
+conversation_continue	 ok wow great oh is it ? oh ohh Thats great Good Really hmm lemme think hm hmmm hmmmmm
+conversation_complete	 Thanks done that's all thats it. thats it I am done Thank you for information Thank. thanks. thank you. thanks nothing else thats it.
+log_request	 can you search for the logs. logs. are you able to check the logs for me ?
+log_environment	 on dev. on int. on prod. on uat. check on prod. lookup on prod. environment. please check the stuff on prod. the logs on prod. production. test. integration
