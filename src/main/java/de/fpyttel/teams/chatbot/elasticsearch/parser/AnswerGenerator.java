@@ -60,7 +60,7 @@ public class AnswerGenerator {
 		// determine answer list
 		final List<Answer> answers = answerMap.getOrDefault(parserResult.getCategory(), answerMap.get(Category.error));
 		// select random answer
-		final Answer answer = answers.get(ThreadLocalRandom.current().nextInt(answers.size()) % answers.size());
+		final Answer answer = answers.get(ThreadLocalRandom.current().nextInt(answers.size()));
 		// add params if needed and return text
 		switch (parserResult.getCategory()) {
 		case log_request:
