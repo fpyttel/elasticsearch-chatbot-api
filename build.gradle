@@ -9,7 +9,7 @@ group = 'de.fpyttel.teams'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
-mainClassName = 'de.fpyttel.teams.bot.Application'
+mainClassName = 'de.fpyttel.teams.chatbot.elasticsearch.Application'
 
 configurations {
 	compileOnly {
