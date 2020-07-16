@@ -31,8 +31,8 @@ public class MessageController {
 			conversationWorkerRegistry.register(action);
 		}
 		
-		// return simple answer
-		return action.replyBuilder().text("Hi I'm here!").build();
+		// return empty action -> work will be done in parallel
+		return Action.builder().build();
 	}
 	
 }

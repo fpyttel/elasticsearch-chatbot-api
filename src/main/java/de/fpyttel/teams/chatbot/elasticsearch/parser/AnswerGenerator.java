@@ -1,4 +1,4 @@
-package de.fpyttel.teams.chatbot.elasticsearch.worker.boundary;
+package de.fpyttel.teams.chatbot.elasticsearch.parser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,9 +8,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import org.springframework.stereotype.Component;
 
+import de.fpyttel.teams.chatbot.elasticsearch.parser.entity.Answer;
 import de.fpyttel.teams.chatbot.elasticsearch.parser.entity.Category;
 import de.fpyttel.teams.chatbot.elasticsearch.parser.entity.Message;
-import de.fpyttel.teams.chatbot.elasticsearch.worker.entity.Answer;
 import lombok.NonNull;
 
 @Component

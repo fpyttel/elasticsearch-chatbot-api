@@ -1,4 +1,4 @@
-package de.fpyttel.teams.chatbot.elasticsearch.parser.boundary;
+package de.fpyttel.teams.chatbot.elasticsearch.parser;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
 import de.fpyttel.teams.chatbot.elasticsearch.client.ms.entity.Action;
-import de.fpyttel.teams.chatbot.elasticsearch.client.ms.entity.Environment;
 import de.fpyttel.teams.chatbot.elasticsearch.parser.entity.Category;
 import de.fpyttel.teams.chatbot.elasticsearch.parser.entity.CategoryType;
+import de.fpyttel.teams.chatbot.elasticsearch.parser.entity.Environment;
 import de.fpyttel.teams.chatbot.elasticsearch.parser.entity.Message;
 import de.fpyttel.teams.chatbot.elasticsearch.parser.entity.Message.Status;
 import lombok.NonNull;

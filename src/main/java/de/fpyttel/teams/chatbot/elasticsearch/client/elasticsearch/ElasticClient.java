@@ -1,4 +1,4 @@
-package de.fpyttel.teams.chatbot.elasticsearch.client.elasticsearch.boundary;
+package de.fpyttel.teams.chatbot.elasticsearch.client.elasticsearch;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -20,7 +20,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import de.fpyttel.teams.chatbot.elasticsearch.client.ms.entity.Environment;
+import de.fpyttel.teams.chatbot.elasticsearch.parser.entity.Environment;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 

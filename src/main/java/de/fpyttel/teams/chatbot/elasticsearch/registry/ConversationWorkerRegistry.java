@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import de.fpyttel.teams.chatbot.elasticsearch.client.ms.entity.Action;
-import de.fpyttel.teams.chatbot.elasticsearch.worker.boundary.ConversationWorker;
+import de.fpyttel.teams.chatbot.elasticsearch.worker.ConversationWorker;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 

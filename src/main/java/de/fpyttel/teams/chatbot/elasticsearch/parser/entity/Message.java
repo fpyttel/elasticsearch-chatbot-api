@@ -1,6 +1,5 @@
 package de.fpyttel.teams.chatbot.elasticsearch.parser.entity;
 
-import de.fpyttel.teams.chatbot.elasticsearch.client.ms.entity.Environment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

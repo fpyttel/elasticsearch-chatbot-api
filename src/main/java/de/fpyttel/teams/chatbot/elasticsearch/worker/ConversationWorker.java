@@ -1,14 +1,15 @@
-package de.fpyttel.teams.chatbot.elasticsearch.worker.boundary;
+package de.fpyttel.teams.chatbot.elasticsearch.worker;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import de.fpyttel.teams.chatbot.elasticsearch.client.elasticsearch.boundary.ElasticClient;
-import de.fpyttel.teams.chatbot.elasticsearch.client.ms.boundary.TeamsClient;
+import de.fpyttel.teams.chatbot.elasticsearch.client.elasticsearch.ElasticClient;
+import de.fpyttel.teams.chatbot.elasticsearch.client.ms.TeamsClient;
 import de.fpyttel.teams.chatbot.elasticsearch.client.ms.entity.Action;
-import de.fpyttel.teams.chatbot.elasticsearch.parser.boundary.ActionMessageParser;
-import de.fpyttel.teams.chatbot.elasticsearch.parser.boundary.ResultJoiner;
+import de.fpyttel.teams.chatbot.elasticsearch.parser.ActionMessageParser;
+import de.fpyttel.teams.chatbot.elasticsearch.parser.AnswerGenerator;
+import de.fpyttel.teams.chatbot.elasticsearch.parser.MessageJoiner;
 import de.fpyttel.teams.chatbot.elasticsearch.parser.entity.CategoryType;
 import de.fpyttel.teams.chatbot.elasticsearch.parser.entity.Message;
 import de.fpyttel.teams.chatbot.elasticsearch.registry.ConversationRegistry;
@@ -51,7 +52,7 @@ public class ConversationWorker extends Thread {
 			}
 
 			// parse message & merge with previous message if possible
-			final Message parserResult = ResultJoiner
+			final Message parserResult = MessageJoiner
 					.join(conversationRegistry.getLastParserResult(conversationId), messageParser.parse(currentAction));
 
 			// prepare response

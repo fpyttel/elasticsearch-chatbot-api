@@ -1,11 +1,11 @@
-package de.fpyttel.teams.chatbot.elasticsearch.parser.boundary;
+package de.fpyttel.teams.chatbot.elasticsearch.parser;
 
 import de.fpyttel.teams.chatbot.elasticsearch.parser.entity.Category;
 import de.fpyttel.teams.chatbot.elasticsearch.parser.entity.CategoryType;
 import de.fpyttel.teams.chatbot.elasticsearch.parser.entity.Message;
 import lombok.NonNull;
 
-public class ResultJoiner {
+public class MessageJoiner {
 
 	public static Message join(final Message oldResult, @NonNull final Message newResult) {
 		if (oldResult != null && (Message.Status.incomplete == newResult.getStatus()

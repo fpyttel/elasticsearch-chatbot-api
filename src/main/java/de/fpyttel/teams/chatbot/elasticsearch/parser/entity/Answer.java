@@ -1,4 +1,4 @@
-package de.fpyttel.teams.chatbot.elasticsearch.worker.entity;
+package de.fpyttel.teams.chatbot.elasticsearch.parser.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.NonNull;

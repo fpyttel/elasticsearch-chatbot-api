@@ -6,10 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import org.junit.jupiter.api.Test;
 
 import de.fpyttel.teams.chatbot.elasticsearch.client.ms.entity.Action;
-import de.fpyttel.teams.chatbot.elasticsearch.client.ms.entity.Environment;
-import de.fpyttel.teams.chatbot.elasticsearch.parser.boundary.ActionMessageParser;
+import de.fpyttel.teams.chatbot.elasticsearch.parser.ActionMessageParser;
 import de.fpyttel.teams.chatbot.elasticsearch.parser.entity.Category;
 import de.fpyttel.teams.chatbot.elasticsearch.parser.entity.CategoryType;
+import de.fpyttel.teams.chatbot.elasticsearch.parser.entity.Environment;
 import de.fpyttel.teams.chatbot.elasticsearch.parser.entity.Message;
 import de.fpyttel.teams.chatbot.elasticsearch.parser.entity.Message.Status;
 

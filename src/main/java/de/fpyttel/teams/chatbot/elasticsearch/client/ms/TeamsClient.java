@@ -1,4 +1,4 @@
-package de.fpyttel.teams.chatbot.elasticsearch.client.ms.boundary;
+package de.fpyttel.teams.chatbot.elasticsearch.client.ms;
 
 import javax.annotation.PostConstruct;
 
