@@ -4,30 +4,33 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import de.fpyttel.teams.bot.model.Action;
 import de.fpyttel.teams.bot.worker.ConversationWorker;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
+@Slf4j
 public class ConversationWorkerRegistry {
 
 	@Autowired
-	private ApplicationContext context;
+	private AutowireCapableBeanFactory autowireCapableBeanFactory;
 
 	private volatile Map<String, ConversationWorker> workerMap = new HashMap<>();
 
 	public void register(@NonNull final Action action) {
 		if (!workerMap.containsKey(action.getConversation().getId())) {
-			final ConversationWorker worker = context.getBean(ConversationWorker.class);
+			final ConversationWorker worker = autowireCapableBeanFactory.createBean(ConversationWorker.class);
 			worker.setConversationId(action.getConversation().getId());
 			workerMap.put(action.getConversation().getId(), worker);
 			worker.start();
+			log.info("registered worker [ID={}]", worker.getId());
 		}
 	}
 
@@ -37,6 +40,11 @@ public class ConversationWorkerRegistry {
 
 	public boolean hasWorker(@NonNull final Action action) {
 		return hasWorker(action.getConversation().getId());
+	}
+
+	public void unregister(@NonNull final ConversationWorker worker) {
+		workerMap.remove(worker.getConversationId());
+		log.info("unregistered worker [ID={}]", worker.getId());
 	}
 
 }

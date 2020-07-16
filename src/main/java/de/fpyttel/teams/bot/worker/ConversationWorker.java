@@ -12,6 +12,8 @@ import de.fpyttel.teams.bot.parser.CategoryType;
 import de.fpyttel.teams.bot.parser.ParserResult;
 import de.fpyttel.teams.bot.parser.ResultJoiner;
 import de.fpyttel.teams.bot.registry.ConversationRegistry;
+import de.fpyttel.teams.bot.registry.ConversationWorkerRegistry;
+import lombok.Getter;
 import lombok.Setter;
 
 @Component
@@ -24,6 +26,9 @@ public class ConversationWorker extends Thread {
 	private ConversationRegistry conversationRegistry;
 
 	@Autowired
+	private ConversationWorkerRegistry conversationWorkerRegistry;
+
+	@Autowired
 	private TeamsClient teamsClient;
 
 	@Autowired
@@ -32,9 +37,9 @@ public class ConversationWorker extends Thread {
 	@Autowired
 	private AnswerGenerator answerGenerator;
 
+	@Getter
 	@Setter
 	private String conversationId;
-	private ParserResult lastMessage;
 
 	@Override
 	public void run() {
@@ -42,12 +47,12 @@ public class ConversationWorker extends Thread {
 			// get latest action OR wait
 			final Action currentAction = conversationRegistry.pull(conversationId);
 			if (currentAction == null) {
-				relax(5000);
-				continue;
+				break;
 			}
 
 			// parse message & merge with previous message if possible
-			final ParserResult parserResult = ResultJoiner.join(lastMessage, messageParser.parse(currentAction));
+			final ParserResult parserResult = ResultJoiner
+					.join(conversationRegistry.getLastParserResult(conversationId), messageParser.parse(currentAction));
 
 			// prepare response
 			final String responseText = answerGenerator.generate(parserResult);
@@ -70,32 +75,15 @@ public class ConversationWorker extends Thread {
 							.build());
 				}
 				// reset last message
-				this.lastMessage = null;
+				conversationRegistry.setLastParserResult(conversationId, null);
 			} else {
 				// update last message
-				this.lastMessage = parserResult;
+				conversationRegistry.setLastParserResult(conversationId, parserResult);
 			}
-
 		}
-	}
 
-	private void relax(final long millis) {
-		try {
-			sleep(millis);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private String buildLoggerMessage(final ParserResult parserResult) {
-		switch (parserResult.getStatus()) {
-		case complete:
-			return "Ok, I'll check the logs of environment " + parserResult.getEnvironment() + " for you...";
-		case incomplete:
-			return "No Problem, but for which environment?";
-		default:
-			return "I'm not getting your point.";
-		}
+		// worker is done -> unregister
+		conversationWorkerRegistry.unregister(this);
 	}
 
 }
