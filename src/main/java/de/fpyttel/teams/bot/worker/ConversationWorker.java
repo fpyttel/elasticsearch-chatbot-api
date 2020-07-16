@@ -50,21 +50,7 @@ public class ConversationWorker extends Thread {
 			final ParserResult parserResult = ResultJoiner.join(lastMessage, messageParser.parse(currentAction));
 
 			// prepare response
-			String responseText = "";
-			switch (parserResult.getCategory()) {
-			case log_request:
-				responseText = buildLoggerMessage(parserResult);
-				break;
-			case error:
-				responseText = answerGenerator.generate(parserResult);
-				break;
-			case conversation_greeting:
-				responseText = answerGenerator.generate(parserResult);
-				break;
-			default:
-				responseText = "Do you have something to do for me?";
-				break;
-			}
+			final String responseText = answerGenerator.generate(parserResult);
 
 			// process action
 			teamsClient.postToConversation(currentAction.replyBuilder().text(responseText).build());
@@ -83,10 +69,13 @@ public class ConversationWorker extends Thread {
 							.text("Coudn't find anything relevant in the last hour.")
 							.build());
 				}
+				// reset last message
+				this.lastMessage = null;
+			} else {
+				// update last message
+				this.lastMessage = parserResult;
 			}
 
-			// update last message
-			this.lastMessage = parserResult;
 		}
 	}
 

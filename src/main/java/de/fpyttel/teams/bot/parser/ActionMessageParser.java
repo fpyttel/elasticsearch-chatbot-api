@@ -11,6 +11,7 @@ import de.fpyttel.teams.bot.model.Action;
 import de.fpyttel.teams.bot.model.Environment;
 import de.fpyttel.teams.bot.parser.ParserResult.Status;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import opennlp.tools.doccat.BagOfWordsFeatureGenerator;
 import opennlp.tools.doccat.DoccatFactory;
 import opennlp.tools.doccat.DoccatModel;
@@ -35,6 +36,7 @@ import opennlp.tools.util.TrainingParameters;
 import opennlp.tools.util.model.ModelUtil;
 
 @Component
+@Slf4j
 public class ActionMessageParser {
 
 	private static DoccatModel categorizerModel;
@@ -43,7 +45,6 @@ public class ActionMessageParser {
 	private static TokenizerME tokenizer;
 	private static POSTaggerME posTagger;
 	private static LemmatizerME lemmatizer;
-	private static boolean initSuccessful = false;
 
 	static {
 		try {
@@ -63,14 +64,13 @@ public class ActionMessageParser {
 			// get lemmatizer
 			lemmatizer = new LemmatizerME(
 					new LemmatizerModel(new FileInputStream(ResourceUtils.getFile("classpath:nlp/en-lemmatizer.bin"))));
-			// set final flag
-			initSuccessful = true;
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new RuntimeException("Cound not init all NLP objects", e);
 		}
 	}
 
 	private static DoccatModel getTrainedCategorizerModel() throws IOException {
+		log.info("start training the categorizer model");
 		final InputStreamFactory inputStreamFactory = new MarkableFileInputStreamFactory(
 				ResourceUtils.getFile("classpath:nlp/elastic-categorizer.txt"));
 		final ObjectStream<String> lineStream = new PlainTextByLineStream(inputStreamFactory, StandardCharsets.UTF_8);
@@ -82,17 +82,14 @@ public class ActionMessageParser {
 		params.put(TrainingParameters.CUTOFF_PARAM, 0);
 		params.put(AbstractTrainer.VERBOSE_PARAM, false);
 
-		return DocumentCategorizerME.train("en", sampleStream, params, factory);
+		final DoccatModel model = DocumentCategorizerME.train("en", sampleStream, params, factory);
+		log.info("finished categorizer model training");
+		return model;
 	}
 
 	public ParserResult parse(@NonNull final Action action) {
-		// check readiness
-		if (!initSuccessful) {
-			return ParserResult.builder().category(Category.error).status(Status.error).build();
-		}
-
 		// get text
-		final String text = " " + action.getText().replaceAll("\\<.*?\\>", "") + " ";
+		final String text = action.getText().replaceAll("\\<.*?\\>", "");
 
 		// define return values
 		Environment env = null;
@@ -107,15 +104,22 @@ public class ActionMessageParser {
 			final String[] lemmas = lemmatizer.lemmatize(tokens, posTags);
 			category = Category
 					.valueOf(docCategorizer.getBestCategory(docCategorizer.categorize(lemmas)));
+			log.info("parsed action with message category=[{}]", category);
 
-			// continue based on category
-			if (Category.log_environment == category) {
+			// continue based on category & type
+			if (CategoryType.log == CategoryType.valueOf(category)) {
 				env = searchEnv(sentence);
 			}
 
 			// check for completeness
-			if (env != null) {
-				status = Status.complete;
+			if (CategoryType.log == CategoryType.valueOf(category)) {
+				if (env == null) {
+					category = Category.log_request_continue;
+					status = Status.incomplete;
+				} else {
+					category = Category.log_request;
+					status = Status.complete;
+				}
 			}
 		}
 
@@ -125,7 +129,7 @@ public class ActionMessageParser {
 	private Environment searchEnv(final String text) {
 		for (Environment env : Environment.class.getEnumConstants()) {
 			// search for any match
-			if (text.toLowerCase().matches(".*\\s" + env.toString().toLowerCase() + "\\s.*")) {
+			if ((" " + text + " ").toLowerCase().matches(".*\\s" + env.toString().toLowerCase() + "\\s.*")) {
 				return env;
 			}
 		}

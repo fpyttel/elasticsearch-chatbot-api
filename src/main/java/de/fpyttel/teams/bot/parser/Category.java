@@ -6,5 +6,6 @@ public enum Category {
 	conversation_continue,
 	conversation_complete,
 	log_request,
+	log_request_continue,
 	log_environment
 }

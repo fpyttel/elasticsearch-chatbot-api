@@ -17,6 +17,8 @@ public enum CategoryType {
 			return conversation;
 		case log_request:
 			return log;
+		case log_request_continue:
+			return log;
 		case log_environment:
 			return log;
 		default:
